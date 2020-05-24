@@ -15,7 +15,7 @@ int main(void)
     {
         for (int k = i; k < h; k++)
         {
-              printf(" ");
+            printf(" ");
         }
         for (int j = 1; j <= i; j++)
         {
