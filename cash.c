@@ -1,10 +1,10 @@
+// Asks user change owed, then prints minimum number of coins equivalent to change owed
 #include <stdio.h>
 #include <math.h>
 #include <cs50.h>
 
 int main(void)
 {
-    //
     int dollar = 100;
     int quarter = 25;
     int dime = 10;
@@ -19,10 +19,10 @@ int main(void)
     // Do while loop to reprompt user when negative input is typed
     do
     {
-        user_input = get_float("How much change is owed: ");
+        user_input = get_float("Change owed: ");
     }
     while (user_input < 0);
-    return user_input;
+    
 
     int change = round(user_input * 100);
 
@@ -41,5 +41,10 @@ int main(void)
     nickel_count = remainder / nickel;
     penny_count = remainder % nickel;
 
+    // Get sum of count
+    coins = quarter_count + dime_count + nickel_count + penny_count;
 
+    // Ensure that the last line of an output is an integer and "\n"
+    printf("The least number of coins required is:\n");
+    printf("%d\n", coins);
 }
