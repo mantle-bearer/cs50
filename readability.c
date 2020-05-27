@@ -1,3 +1,5 @@
+// A program that computes the Coleman-Liau index of text to know the grade level of the text
+
 #include <cs50.h>
 #include <stdio.h>
 #include <string.h>
@@ -6,7 +8,10 @@
 
 int main(void)
 {
+    // Gets text from user
     string text = get_string("Text: ");
+    
+    //Initialize leteers, words and sentences
     int letters = 0;
     int words = 1;
     int sentences = 0;
@@ -18,11 +23,11 @@ int main(void)
         {
             letters++;
         }
-        else if(text[i] == ' ')
+        else if (text[i] == ' ')
         {
             words++;
         }
-        else if(text[i] == '.' || text[i] == '!' || text[i] == '?')
+        else if (text[i] == '.' || text[i] == '!' || text[i] == '?')
         {
             sentences++;
         }
@@ -38,11 +43,11 @@ int main(void)
         float index = (0.0588 * L - 0.296 * S - 15.8);
         
         // Prints the grade of the text depending of the result of colman-liu formular
-        if(index >= 16)
+        if (index >= 16)
         {
             printf("Grade 16+\n");
         }
-        else if(index < 1)
+        else if (index < 1)
         {
             printf("Before Grade 1\n");
         }
