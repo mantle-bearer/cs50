@@ -1,12 +1,13 @@
 #include "helpers.h"
 #include <math.h>
 
-int cap (int x);
-RGBTRIPLE rowend (RGBTRIPLE x, RGBTRIPLE y);
-RGBTRIPLE row (RGBTRIPLE x, RGBTRIPLE y, RGBTRIPLE z);
-RGBTRIPLE corner (RGBTRIPLE x, RGBTRIPLE y, RGBTRIPLE z, RGBTRIPLE a);
-RGBTRIPLE edge (RGBTRIPLE x, RGBTRIPLE y, RGBTRIPLE z, RGBTRIPLE a, RGBTRIPLE b, RGBTRIPLE c);
-RGBTRIPLE middle (RGBTRIPLE x, RGBTRIPLE y, RGBTRIPLE z, RGBTRIPLE a, RGBTRIPLE b, RGBTRIPLE c, RGBTRIPLE d, RGBTRIPLE e, RGBTRIPLE f);
+int cap(int x);
+RGBTRIPLE rowend(RGBTRIPLE x, RGBTRIPLE y);
+RGBTRIPLE row(RGBTRIPLE x, RGBTRIPLE y, RGBTRIPLE z);
+RGBTRIPLE corner(RGBTRIPLE x, RGBTRIPLE y, RGBTRIPLE z, RGBTRIPLE a);
+RGBTRIPLE edge(RGBTRIPLE x, RGBTRIPLE y, RGBTRIPLE z, RGBTRIPLE a, RGBTRIPLE b, RGBTRIPLE c);
+RGBTRIPLE middle(RGBTRIPLE x, RGBTRIPLE y, RGBTRIPLE z, RGBTRIPLE a, RGBTRIPLE b, RGBTRIPLE c, RGBTRIPLE d, RGBTRIPLE e,
+                 RGBTRIPLE f);
 
 
 // Convert image to grayscale
@@ -16,13 +17,12 @@ void grayscale(int height, int width, RGBTRIPLE image[height][width])
     {
         for (int j = 0; j < width; j++) //gets each pixel in each row
         {
-            int k = round((image[i][j].rgbtBlue + image[i][j].rgbtGreen + image[i][j].rgbtRed) / 3.0); //divides by float to get float value, which it then rounds
+            int k = round((image[i][j].rgbtBlue + image[i][j].rgbtGreen + image[i][j].rgbtRed) / 3.0);
             image[i][j].rgbtBlue = k;
             image[i][j].rgbtGreen = k;
             image[i][j].rgbtRed = k;
         }
     }
-    return;
 }
 
 // Convert image to sepia
@@ -43,7 +43,6 @@ void sepia(int height, int width, RGBTRIPLE image[height][width])
             image[i][j].rgbtRed = red;
         }
     }
-    return;
 }
 
 // Reflect image horizontally
@@ -55,7 +54,7 @@ void reflect(int height, int width, RGBTRIPLE image[height][width])
     {
         for (int j = 0; j < width; j++) //gets each pixel in each row
         {
-            temp[i][j] = image[i][width - (j + 1)]; //sets temp array to 'reflected' image array
+            temp[i][j] = image[i][width - (j + 1)]; //sets temp array to 'reflected'
         }
     }
 
@@ -72,7 +71,6 @@ void reflect(int height, int width, RGBTRIPLE image[height][width])
 // Blur image
 void blur(int height, int width, RGBTRIPLE image[height][width])
 {
-
     int sumblue;
     int sumgreen;
     int sumred;
@@ -90,35 +88,36 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
             counter = 0.00;
 
             // sums values of the pixel and 8 neighboring ones, skips iteration if it goes outside the pic
-           for (int m = -1; m < 2; m++)  // loop thru row of pixel matrix 3x3 -1 0 1
-           {
-               for (int n = -1; n < 2; n++) // loop thru column of pixel matrix 3x3 -1 0 1
-               {
-                   if (i + m < 0 || i + m > height - 1)
-                   {
-                       continue;
-                   }
-                   if (j + n < 0 || j + n > width - 1)
-                   {
-                       continue;
-                   }
+            for (int m = -1; m < 2; m++) // loop thru row of pixel matrix 3x3 -1 0 1
+            {
+                for (int n = -1; n < 2; n++) // loop thru column of pixel matrix 3x3 -1 0 1
+                {
+                    if (i + m < 0 || i + m > height - 1)
+                    {
+                        continue;
+                    }
+                    if (j + n < 0 || j + n > width - 1)
+                    {
+                        continue;
+                    }
 
-                   sumblue += image[i + m][j + n ].rgbtBlue; // sum of blue values of all pixels in 3x3 for that particular pixel looped into m,n and then i,j
-                   sumgreen += image[i + m][j + n].rgbtGreen;
-                   sumred += image[i + m][j + n].rgbtRed;
-                   counter++; // after the rbg values of that particular pixel is added(adding for neighboring values of it) increase counter  and move to next m,n and then i,j
+                    // sum of blue values of all pixels in 3x3 for that particular pixel looped into m,n and then i,j
+                    sumblue += image[i + m][j + n].rgbtBlue;
+                    sumgreen += image[i + m][j + n].rgbtGreen;
+                    sumred += image[i + m][j + n].rgbtRed;
+                    counter++;
 
 
-                   // take avg by sum/ counter and store it in temp rgbtriple
-                   temp[i][j].rgbtBlue = round(sumblue / counter);
-                   temp[i][j].rgbtGreen = round(sumgreen / counter);
-                   temp[i][j].rgbtRed = round(sumred / counter);
-               }
-           }
+                    // take avg by sum/ counter and store it in temp rgbtriple
+                    temp[i][j].rgbtBlue = round(sumblue / counter);
+                    temp[i][j].rgbtGreen = round(sumgreen / counter);
+                    temp[i][j].rgbtRed = round(sumred / counter);
+                }
+            }
         }
     }
     // copy that into actual pixel for every pixel from all values of i and j
-     for (int i = 0; i < height; i++)
+    for (int i = 0; i < height; i++)
     {
         for (int j = 0; j < width; j++)
         {
@@ -130,20 +129,20 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
 }
 
 //caps sepia values at 255
-int cap (int x) //takes an x value as input
+int cap(int x)
 {
-    if (x > 255) //if x is higher than 255, returns 255
+    if (x > 255)
     {
         return 255;
     }
-    else //if x isn't higher than 255, returns x
+    else
     {
         return x;
     }
 }
 
 
-RGBTRIPLE rowend (RGBTRIPLE x, RGBTRIPLE y)
+RGBTRIPLE rowend(RGBTRIPLE x, RGBTRIPLE y)
 {
     RGBTRIPLE e;
     e.rgbtBlue = round((x.rgbtBlue + y.rgbtBlue) / 2.0);
@@ -153,7 +152,7 @@ RGBTRIPLE rowend (RGBTRIPLE x, RGBTRIPLE y)
 }
 
 //gets new RGB values for single row pixels
-RGBTRIPLE row (RGBTRIPLE x, RGBTRIPLE y, RGBTRIPLE z)
+RGBTRIPLE row(RGBTRIPLE x, RGBTRIPLE y, RGBTRIPLE z)
 {
     RGBTRIPLE r;
     r.rgbtBlue = round((x.rgbtBlue + y.rgbtBlue + z.rgbtBlue) / 3.0);
@@ -163,7 +162,7 @@ RGBTRIPLE row (RGBTRIPLE x, RGBTRIPLE y, RGBTRIPLE z)
 }
 
 //gets new RGB values for corner pixels
-RGBTRIPLE corner (RGBTRIPLE x, RGBTRIPLE y, RGBTRIPLE z, RGBTRIPLE a)
+RGBTRIPLE corner(RGBTRIPLE x, RGBTRIPLE y, RGBTRIPLE z, RGBTRIPLE a)
 {
     RGBTRIPLE f;
     f.rgbtBlue = round((x.rgbtBlue + y.rgbtBlue + z.rgbtBlue + a.rgbtBlue) / 4.0);
@@ -173,7 +172,7 @@ RGBTRIPLE corner (RGBTRIPLE x, RGBTRIPLE y, RGBTRIPLE z, RGBTRIPLE a)
 }
 
 //gets new RGB values for edge pixels
-RGBTRIPLE edge (RGBTRIPLE x, RGBTRIPLE y, RGBTRIPLE z, RGBTRIPLE a, RGBTRIPLE b, RGBTRIPLE c)
+RGBTRIPLE edge(RGBTRIPLE x, RGBTRIPLE y, RGBTRIPLE z, RGBTRIPLE a, RGBTRIPLE b, RGBTRIPLE c)
 {
     RGBTRIPLE s;
     s.rgbtBlue = round((x.rgbtBlue + y.rgbtBlue + z.rgbtBlue + a.rgbtBlue + b.rgbtBlue + c.rgbtBlue) / 6.0);
@@ -183,11 +182,15 @@ RGBTRIPLE edge (RGBTRIPLE x, RGBTRIPLE y, RGBTRIPLE z, RGBTRIPLE a, RGBTRIPLE b,
 }
 
 //gets new RGB values for middle pixels
-RGBTRIPLE middle (RGBTRIPLE x, RGBTRIPLE y, RGBTRIPLE z, RGBTRIPLE a, RGBTRIPLE b, RGBTRIPLE c, RGBTRIPLE d, RGBTRIPLE e, RGBTRIPLE f)
+RGBTRIPLE middle(RGBTRIPLE x, RGBTRIPLE y, RGBTRIPLE z, RGBTRIPLE a, RGBTRIPLE b, RGBTRIPLE c, RGBTRIPLE d, RGBTRIPLE e,
+                 RGBTRIPLE f)
 {
     RGBTRIPLE n;
-    n.rgbtBlue = round((x.rgbtBlue + y.rgbtBlue + z.rgbtBlue + a.rgbtBlue + b.rgbtBlue + c.rgbtBlue + d.rgbtBlue + e.rgbtBlue + f.rgbtBlue) / 9.0);
-    n.rgbtGreen = round((x.rgbtGreen + y.rgbtGreen + z.rgbtGreen + a.rgbtGreen + b.rgbtGreen + c.rgbtGreen + d.rgbtGreen + e.rgbtGreen + f.rgbtGreen) / 9.0);
-    n.rgbtRed = round((x.rgbtRed + y.rgbtRed + z.rgbtRed + a.rgbtRed + b.rgbtRed + c.rgbtRed + d.rgbtRed + e.rgbtRed + f.rgbtRed) / 9.0);
+    n.rgbtBlue = round((x.rgbtBlue + y.rgbtBlue + z.rgbtBlue + a.rgbtBlue + b.rgbtBlue + c.rgbtBlue + d.rgbtBlue + e.rgbtBlue +
+                        f.rgbtBlue) / 9.0);
+    n.rgbtGreen = round((x.rgbtGreen + y.rgbtGreen + z.rgbtGreen + a.rgbtGreen + b.rgbtGreen + c.rgbtGreen + d.rgbtGreen + e.rgbtGreen +
+                         f.rgbtGreen) / 9.0);
+    n.rgbtRed = round((x.rgbtRed + y.rgbtRed + z.rgbtRed + a.rgbtRed + b.rgbtRed + c.rgbtRed + d.rgbtRed + e.rgbtRed + f.rgbtRed) /
+                      9.0);
     return n;
 }
