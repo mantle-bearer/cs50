@@ -131,9 +131,9 @@ for (h = 0; h < height; h++)
 
         if (h - 1 >= 0 && w - 1 >= 0)
         {
-            bR = image[h-1][w-1].rgbtRed;
-            bG = image[h-1][w-1].rgbtGreen;
-            bB = image[h-1][w-1].rgbtBlue;
+            bR -= image[h-1][w-1].rgbtRed;
+            bG -= image[h-1][w-1].rgbtGreen;
+            bB -= image[h-1][w-1].rgbtBlue;
             count++;
         }
 
