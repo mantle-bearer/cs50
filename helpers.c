@@ -98,24 +98,22 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
                    {
                        continue;
                    }
-           }
+                   if (j + n < 0 || j + m > width - 1)
+                   {
+                       continue;
+                   }
 
-           if (j + n < 0 || j + m > width - 1)
-           {
-               continue;
-           }
-
-           sumblue += image[i+m][j+n].rgbtBlue; // sum of blue values of all pixels in 3x3 for that particular pixel looped into m,n and then i,j
-           sumgreen += image[i+m][j+n].rgbtGreen;
-           sumred += image[i+m][j+n].rgbtRed;
-           counter++; // after the rbg values of that particular pixel is added(adding for neighboring values of it) increase counter  and move to next m,n and then i,j
-
-
-    // take avg by sum/ counter and store it in temp rgbtriple
-    temp[i][j].rgbtBlue=round(sumblue/counter);
-    temp[i][j].rgbtGreen=round(sumgreen/counter);
-    temp[i][j].rgbtRed=round(sumred/counter);
-          }
+                   sumblue += image[i + m][j + n ].rgbtBlue; // sum of blue values of all pixels in 3x3 for that particular pixel looped into m,n and then i,j
+                   sumgreen += image[i + m][j + n].rgbtGreen;
+                   sumred += image[i + m][j + n].rgbtRed;
+                   counter++; // after the rbg values of that particular pixel is added(adding for neighboring values of it) increase counter  and move to next m,n and then i,j
+                   
+                   
+                   // take avg by sum/ counter and store it in temp rgbtriple
+                   temp[i][j].rgbtBlue = round(sumblue / counter);
+                   temp[i][j].rgbtGreen = round(sumgreen / counter);
+                   temp[i][j].rgbtRed = round(sumred / counter);
+               }
            }
         }
     }
