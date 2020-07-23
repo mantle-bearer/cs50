@@ -72,61 +72,107 @@ void reflect(int height, int width, RGBTRIPLE image[height][width])
 // Blur image
 void blur(int height, int width, RGBTRIPLE image[height][width])
 {
+    int h, w;
+    float bR = 0, bG = 0, bB = 0;//for blurred Red, Green, Blue
+    int count = 0;
+    RGBTRIPLE copy[height][width];
 
-    int sumblue;
-    int sumgreen;
-    int sumred;
-    float counter;
-    //create a temporary table of colors to not alter the calculations
-    RGBTRIPLE temp[height][width];
-
-    for (int i = 0; i < height; i++)
+for (h = 0; h < height; h++)
+{
+    for (w = 0; w < width; w++)
     {
-        for (int j = 0; j < width; j++)
+        if (h >= 0 && w >= 0)
         {
-            sumblue = 0;
-            sumgreen = 0;
-            sumred = 0;
-            counter = 0.00;
-
-            // sums values of the pixel and 8 neighboring ones, skips iteration if it goes outside the pic
-           for(int m = -1; m < 2; m++)  // loop thru row of pixel matrix 3x3 -1 0 1
-           {
-               for(int n = -1; n < 2; n++) // loop thru column of pixel matrix 3x3 -1 0 1
-               {
-                   if (i + m < 0 || i + m > height - 1)
-                   {
-                       continue;
-                   }
-                   if (j + n < 0 || j + m > width - 1)
-                   {
-                       continue;
-                   }
-
-                   sumblue += image[i + m][j + n ].rgbtBlue; // sum of blue values of all pixels in 3x3 for that particular pixel looped into m,n and then i,j
-                   sumgreen += image[i + m][j + n].rgbtGreen;
-                   sumred += image[i + m][j + n].rgbtRed;
-                   counter++; // after the rbg values of that particular pixel is added(adding for neighboring values of it) increase counter  and move to next m,n and then i,j
-                   
-                   
-                   // take avg by sum/ counter and store it in temp rgbtriple
-                   temp[i][j].rgbtBlue = round(sumblue / counter);
-                   temp[i][j].rgbtGreen = round(sumgreen / counter);
-                   temp[i][j].rgbtRed = round(sumred / counter);
-               }
-           }
+            bR = image[h][w].rgbtRed;
+            bG = image[h][w].rgbtGreen;
+            bB = image[h][w].rgbtBlue;
+            count++;
         }
+
+        if (h + 1 < height && w - 1 >= 0)
+        {
+            bR = image[h+1][w-1].rgbtRed;
+            bG = image[h+1][w-1].rgbtGreen;
+            bB = image[h+1][w-1].rgbtBlue;
+            count++;
+        }
+
+        if (h + 1 < height)
+        {
+            bR = image[h+1][w].rgbtRed;
+            bG = image[h+1][w].rgbtGreen;
+            bB = image[h+1][w].rgbtBlue;
+            count++;
+        }
+
+        if (h + 1 < height && w + 1 < width)
+        {
+            bR = image[h+1][w+1].rgbtRed;
+            bG = image[h+1][w+1].rgbtGreen;
+            bB = image[h+1][w+1].rgbtBlue;
+            count++;
+        }
+
+        if (w - 1 >= 0)
+        {
+            bR = image[h][w-1].rgbtRed;
+            bG = image[h][w-1].rgbtGreen;
+            bB = image[h][w-1].rgbtBlue;
+            count++;
+        }
+
+        if (w + 1 < width)
+        {
+            bR = image[h][w+1].rgbtRed;
+            bG = image[h][w+1].rgbtGreen;
+            bB = image[h][w+1].rgbtBlue;
+            count++;
+        }
+
+        if (h - 1 >= 0 && w - 1 >= 0)
+        {
+            bR = image[h-1][w-1].rgbtRed;
+            bG = image[h-1][w-1].rgbtGreen;
+            bB = image[h-1][w-1].rgbtBlue;
+            count++;
+        }
+
+        if (h - 1 >= 0)
+        {
+            bR = image[h-1][w].rgbtRed;
+            bG = image[h-1][w].rgbtGreen;
+            bB = image[h-1][w].rgbtBlue;
+            count++;
+        }
+
+        if (h - 1 >= 0 && w + 1 < width)
+        {
+            bR = image[h-1][w+1].rgbtRed;
+            bG = image[h-1][w+1].rgbtGreen;
+            bB = image[h-1][w+1].rgbtBlue;
+            count++;
+        }
+
+        int aveR = (int)floor(bR / count + 0.5);
+        int aveG = (int)floor(bG / count + 0.5);
+        int aveB = (int)floor(bB / count + 0.5);
+
+        copy[h][w].rgbtRed = aveR;
+        copy[h][w].rgbtGreen = aveG;
+        copy[h][w].rgbtBlue = aveB;
     }
-    // copy that into actual pixel for every pixel from all values of i and j
-     for (int i = 0; i < height; i++)
+}
+
+for (h = 0; h < height; h++)
+{
+    for (w = 0; w < width; w++)
     {
-        for (int j = 0; j < width; j++)
-        {
-            image[i][j].rgbtBlue=temp[i][j].rgbtBlue;
-            image[i][j].rgbtGreen=temp[i][j].rgbtGreen;
-            image[i][j].rgbtRed=temp[i][j].rgbtRed;
-        }
+        image[h][w].rgbtRed = copy[h][w].rgbtRed;
+        image[h][w].rgbtGreen = copy[h][w].rgbtGreen;
+        image[h][w].rgbtBlue = copy[h][w].rgbtBlue;
     }
+}
+return;
 }
 
 //caps sepia values at 255
