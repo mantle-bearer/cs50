@@ -91,65 +91,65 @@ for (h = 0; h < height; h++)
 
         if (h + 1 < height && w - 1 >= 0)
         {
-            bR = image[h+1][w-1].rgbtRed;
-            bG = image[h+1][w-1].rgbtGreen;
-            bB = image[h+1][w-1].rgbtBlue;
+            bR += image[h+1][w-1].rgbtRed;
+            bG += image[h+1][w-1].rgbtGreen;
+            bB += image[h+1][w-1].rgbtBlue;
             count++;
         }
 
         if (h + 1 < height)
         {
-            bR = image[h+1][w].rgbtRed;
-            bG = image[h+1][w].rgbtGreen;
-            bB = image[h+1][w].rgbtBlue;
+            bR += image[h+1][w].rgbtRed;
+            bG += image[h+1][w].rgbtGreen;
+            bB += image[h+1][w].rgbtBlue;
             count++;
         }
 
         if (h + 1 < height && w + 1 < width)
         {
-            bR = image[h+1][w+1].rgbtRed;
-            bG = image[h+1][w+1].rgbtGreen;
-            bB = image[h+1][w+1].rgbtBlue;
+            bR += image[h+1][w+1].rgbtRed;
+            bG += image[h+1][w+1].rgbtGreen;
+            bB += image[h+1][w+1].rgbtBlue;
             count++;
         }
 
         if (w - 1 >= 0)
         {
-            bR = image[h][w-1].rgbtRed;
-            bG = image[h][w-1].rgbtGreen;
-            bB = image[h][w-1].rgbtBlue;
+            bR += image[h][w-1].rgbtRed;
+            bG += image[h][w-1].rgbtGreen;
+            bB += image[h][w-1].rgbtBlue;
             count++;
         }
 
         if (w + 1 < width)
         {
-            bR = image[h][w+1].rgbtRed;
-            bG = image[h][w+1].rgbtGreen;
-            bB = image[h][w+1].rgbtBlue;
+            bR += image[h][w+1].rgbtRed;
+            bG += image[h][w+1].rgbtGreen;
+            bB += image[h][w+1].rgbtBlue;
             count++;
         }
 
         if (h - 1 >= 0 && w - 1 >= 0)
         {
-            bR = image[h-1][w-1].rgbtRed;
-            bG = image[h-1][w-1].rgbtGreen;
-            bB = image[h-1][w-1].rgbtBlue;
+            bR += image[h-1][w-1].rgbtRed;
+            bG += image[h-1][w-1].rgbtGreen;
+            bB += image[h-1][w-1].rgbtBlue;
             count++;
         }
 
         if (h - 1 >= 0)
         {
-            bR = image[h-1][w].rgbtRed;
-            bG = image[h-1][w].rgbtGreen;
-            bB = image[h-1][w].rgbtBlue;
+            bR += image[h-1][w].rgbtRed;
+            bG += image[h-1][w].rgbtGreen;
+            bB += image[h-1][w].rgbtBlue;
             count++;
         }
 
         if (h - 1 >= 0 && w + 1 < width)
         {
-            bR = image[h-1][w+1].rgbtRed;
-            bG = image[h-1][w+1].rgbtGreen;
-            bB = image[h-1][w+1].rgbtBlue;
+            bR += image[h-1][w+1].rgbtRed;
+            bG += image[h-1][w+1].rgbtGreen;
+            bB += image[h-1][w+1].rgbtBlue;
             count++;
         }
 
