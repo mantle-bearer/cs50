@@ -112,13 +112,13 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
 
 
     //corner values
-    if (height > 2 && width > 2)
-    {
-        blurred[0][0] = corner(image[0][0], image[0][1], image[1][0], image[1][1]);
-        blurred[0][width - 1] = corner(image[0][width - 1], image[0][width - 2], image[1][width - 1], image[1][width - 2]);
-        blurred[height - 1][0] = corner(image[height - 1][0], image[height - 1][1], image[height - 2][0], image[height - 2][1]);
-        blurred[height - 1][width - 1] = corner(image[height - 1][width - 1], image[height - 1][width - 1], image[height - 2][width - 2], image[height - 2][width - 2]);
-    }
+    // if (height > 2 && width > 2)
+    // {
+    //     blurred[0][0] = corner(image[0][0], image[0][1], image[1][0], image[1][1]);
+    //     blurred[0][width - 1] = corner(image[0][width - 1], image[0][width - 2], image[1][width - 1], image[1][width - 2]);
+    //     blurred[height - 1][0] = corner(image[height - 1][0], image[height - 1][1], image[height - 2][0], image[height - 2][1]);
+    //     blurred[height - 1][width - 1] = corner(image[height - 1][width - 1], image[height - 1][width - 1], image[height - 2][width - 2], image[height - 2][width - 2]);
+    // }
 
 
     //single row values
