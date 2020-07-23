@@ -73,95 +73,62 @@ void reflect(int height, int width, RGBTRIPLE image[height][width])
 void blur(int height, int width, RGBTRIPLE image[height][width])
 {
 
-    RGBTRIPLE blurred [height][width]; //declare temp array to hold blurred values
+    int sumblue;
+    int sumgreen;
+    int sumred;
+    float counter;
+    //create a temporary table of colors to not alter the calculations
+    RGBTRIPLE temp[height][width];
 
-
-    //middle rows and columns
-    if (height > 2 && width > 2) //check that middle rows exist
+    for (int i = 0; i < height; i++)
     {
-        for (int i = 1; i < (height - 1); i++) //middle rows
+        for (int j = 0; j < width; j++)
         {
-            for (int j = 1; j < (width - 1); j++) //gets middle pixel in each middle row
-            {
-                blurred[i][j] = middle(image[i - 1][j - 1], image[i - 1][j], image[i - 1][j + 1], image[i][j - 1], image[i][j], image[i][j + 1], image[i+1][j - 1], image[i + 1][j], image[i + 1][j + 1]);
-            }
+            sumblue = 0;
+            sumgreen = 0;
+            sumred = 0;
+            counter = 0.00;
+
+            // sums values of the pixel and 8 neighboring ones, skips iteration if it goes outside the pic
+           for(int m = -1; m < 2; m++)  // loop thru row of pixel matrix 3x3 -1 0 1
+           {
+               for(int n = -1; n < 2; n++) // loop thru column of pixel matrix 3x3 -1 0 1
+               {
+                   if (i + m < 0 || i + m > height - 1)
+                   {
+                       continue;
+                   }
+           }
+
+           if (j + n < 0 || j + m > width - 1)
+           {
+               continue;
+           }
+
+           sumblue += image[i+m][j+n].rgbtBlue; // sum of blue values of all pixels in 3x3 for that particular pixel looped into m,n and then i,j
+           sumgreen += image[i+m][j+n].rgbtGreen;
+           sumred += image[i+m][j+n].rgbtRed;
+           counter++; // after the rbg values of that particular pixel is added(adding for neighboring values of it) increase counter  and move to next m,n and then i,j
+
+
+    // take avg by sum/ counter and store it in temp rgbtriple
+    temp[i][j].rgbtBlue=round(sumblue/counter);
+    temp[i][j].rgbtGreen=round(sumgreen/counter);
+    temp[i][j].rgbtRed=round(sumred/counter);
+          }
+           }
         }
     }
-
-
-    //top and bottom rows
-    if (width > 2 && height > 1)
+    // copy that into actual pixel for every pixel from all values of i and j
+     for (int i = 0; i < height; i++)
     {
-        for (int i = 1; i < (width - 1); i++)
+        for (int j = 0; j < width; j++)
         {
-            blurred[0][i] = edge(image[0][i - 1], image[0][i], image[0][i+1], image[1][i - 1], image[1][i], image[1][i + 1]);
-            blurred[height - 1][i] = edge(image[height - 1][i - 1], image[height - 1][i], image[height - 1][i + 1], image[height - 2][i - 1], image[height - 2][i], image[height - 2][i + 1]);
+            image[i][j].rgbtBlue=temp[i][j].rgbtBlue;
+            image[i][j].rgbtGreen=temp[i][j].rgbtGreen;
+            image[i][j].rgbtRed=temp[i][j].rgbtRed;
         }
     }
-
-
-    //left and right columns
-    if (height > 2 && width > 1)
-    {
-        for (int i = 1; i < (height - 1); i++)
-        {
-            blurred[i][0] = edge(image[i - 1][0], image[i][0], image[i + 1][0], image[i - 1][1], image[i][1], image[i + 1][1]);
-            blurred[i][width - 1] = edge(image[i - 1][width - 1], image[i][width - 1], image[i + 1][width - 1], image[i - 1][width - 2], image[i][width - 2], image[i + 1][width - 2]);
-        }
-    }
-
-
-    //corner values
-    if (height < 2 && width < 2)
-    {
-        blurred[0][0] = corner(image[0][0], image[0][1], image[1][0], image[1][1]);
-        blurred[0][width - 1] = corner(image[0][width - 1], image[0][width - 2], image[1][width - 1], image[1][width - 2]);
-        blurred[height - 1][0] = corner(image[height - 1][0], image[height - 1][1], image[height - 2][0], image[height - 2][1]);
-        blurred[height - 1][width - 1] = corner(image[height - 1][width - 1], image[height - 1][width - 1], image[height - 2][width - 2], image[height - 2][width - 2]);
-    }
-
-
-    //single row values
-    if (height == 1 && width > 2)
-    {
-        for (int i = 1; i < (width - 1); i++)
-        {
-            blurred[0][i] = row(image[0][i - 1], image[0][i], image[0][i + 1]);
-        }
-    }
-
-    //single row end, or two pixel horizontal array
-    if (height == 1)
-    {
-        blurred[0][0] = rowend(image[0][0], image[0][1]);
-        blurred[0][width - 1] = rowend(image[0][width - 1], image[0][width - 2]);
-    }
-
-    //single column values
-    if (width == 1 && height > 2)
-    {
-        for (int i = 0; i < (width - 1); i++)
-        {
-            blurred[i][0] = row(image[i - 1][0], image[i][0], image[i + 1][0]);
-        }
-    }
-
-    //single column end, or two pixel vertical array
-    if (width == 1)
-    {
-        blurred[0][0] = rowend(image[0][0], image[1][0]);
-        blurred[height - 1][0] = rowend(image[height - 1][0], image[height - 2][0]);
-    }
-
-    //transfer temp array values into image array
-    for (int i = 0; i < height; i++) //gets each row of the image
-    {
-        for (int j = 0; j < width; j++) //gets each pixel in each row
-        {
-            image[i][j] = blurred[i][j];
-        }
-    }
-    return;
 }
 
 //caps sepia values at 255
