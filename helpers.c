@@ -90,15 +90,15 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
             counter = 0.00;
 
             // sums values of the pixel and 8 neighboring ones, skips iteration if it goes outside the pic
-           for(int m = -1; m < 2; m++)  // loop thru row of pixel matrix 3x3 -1 0 1
+           for (int m = -1; m < 2; m++)  // loop thru row of pixel matrix 3x3 -1 0 1
            {
-               for(int n = -1; n < 2; n++) // loop thru column of pixel matrix 3x3 -1 0 1
+               for (int n = -1; n < 2; n++) // loop thru column of pixel matrix 3x3 -1 0 1
                {
-                   if (j + m < 0 || j + m > height - 1)
+                   if (i + m < 0 || i + m > height - 1)
                    {
                        continue;
                    }
-                   if (j + n < 0 || j + m > width - 1)
+                   if (j + n < 0 || j + n > width - 1)
                    {
                        continue;
                    }
